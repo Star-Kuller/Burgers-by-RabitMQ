@@ -1,0 +1,18 @@
+﻿services:
+  orderterminal:
+    image: orderterminal
+    build:
+      context: .
+      dockerfile: OrderTerminal/Dockerfile
+
+  kitchen:
+    image: kitchen
+    build:
+      context: .
+      dockerfile: Kitchen/Dockerfile
+
+  notificationboard:
+    image: notificationboard
+    build:
+      context: .
+      dockerfile: NotificationBoard/Dockerfile
