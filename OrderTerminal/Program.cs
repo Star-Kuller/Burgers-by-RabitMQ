@@ -35,9 +35,9 @@ while (true)
     await rabbitMqService.SendOrderAsync(order);
 
     Console.WriteLine($"Ваш заказ под номером {order.OrderNumber}. Следите за его приготовлением на NotificationBoard");
-    await Task.Delay(3000);
-    Console.WriteLine("Следующий!");
     await Task.Delay(1000);
+    Console.WriteLine("Следующий!");
+    await Task.Delay(500);
 }
 return;
 

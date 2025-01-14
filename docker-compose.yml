@@ -1,18 +1,29 @@
 ﻿services:
-  orderterminal:
-    image: orderterminal
-    build:
-      context: .
-      dockerfile: OrderTerminal/Dockerfile
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    ports:
+      - "5672:5672"   # AMQP порт
+      - "15672:15672" # Порт управления
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 20s
+      retries: 5
 
   kitchen:
     image: kitchen
     build:
       context: .
       dockerfile: Kitchen/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
-  notificationboard:
+  notification-board:
     image: notificationboard
     build:
       context: .
       dockerfile: NotificationBoard/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy

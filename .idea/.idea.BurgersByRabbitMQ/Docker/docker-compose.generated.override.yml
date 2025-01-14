@@ -1,0 +1,40 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  kitchen:
+    build:
+      context: "C:\\MyProjects\\BurgersByRabitMQ"
+      dockerfile: "Kitchen/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Kitchen.dll"
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "kitchen:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\UserD\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\MyProjects\\BurgersByRabitMQ\\Kitchen:/app:rw"
+    - "C:\\MyProjects\\BurgersByRabitMQ:/src:rw"
+    working_dir: "/app"
+  notification-board:
+    build:
+      context: "C:\\MyProjects\\BurgersByRabitMQ"
+      dockerfile: "NotificationBoard/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/NotificationBoard.dll"
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "notificationboard:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\UserD\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\MyProjects\\BurgersByRabitMQ\\NotificationBoard:/app:rw"
+    - "C:\\MyProjects\\BurgersByRabitMQ:/src:rw"
+    working_dir: "/app"
