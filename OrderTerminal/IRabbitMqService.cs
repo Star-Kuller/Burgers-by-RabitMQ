@@ -1,6 +1,7 @@
 namespace OrderTerminal;
 
 public interface IRabbitMqService
-{ 
-    Task SendOrder(Order order);
+{
+    Task InitializeRabbitMqAsync();
+    Task SendOrderAsync(Order order);
 }

@@ -1,12 +1,13 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-using OrderTerminal;
+﻿using OrderTerminal;
 using RabbitMQ.Client;
 
 
 var factory = new ConnectionFactory { HostName = "localhost" };
 await using var connection = await factory.CreateConnectionAsync();
 await using var channel = await connection.CreateChannelAsync();
+IRabbitMqService rabbitMqService = new RabbitMqService(channel);
+await rabbitMqService.InitializeRabbitMqAsync();
+
 while (true)
 {
     ShowMenu();
@@ -31,17 +32,12 @@ while (true)
     }
 
     var order = new Order(selectedPositions);
-    
-    await channel.ExchangeDeclareAsync(exchange: "logs", type: ExchangeType.Fanout);
-    var serializedOrder = JsonConvert.SerializeObject(order);
-    var body = Encoding.UTF8.GetBytes(serializedOrder);
+    await rabbitMqService.SendOrderAsync(order);
 
-    await channel.BasicPublishAsync(exchange: string.Empty, routingKey: "hello", body: body);
-
-    Console.WriteLine($"Ваш заказ под номером {0}. Следите за его приготовлением на NotificationBoard");
-    await Task.Delay(5000);
-    Console.WriteLine("Следующий!");
+    Console.WriteLine($"Ваш заказ под номером {order.OrderNumber}. Следите за его приготовлением на NotificationBoard");
     await Task.Delay(3000);
+    Console.WriteLine("Следующий!");
+    await Task.Delay(1000);
 }
 return;
 
