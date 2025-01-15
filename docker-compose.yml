@@ -1,6 +1,6 @@
 ﻿services:
   rabbitmq:
-    image: rabbitmq:4.0-management
+    image: rabbitmq:latest
     ports:
       - "5672:5672"   # AMQP порт
       - "15672:15672" # Порт управления

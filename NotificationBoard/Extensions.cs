@@ -1,4 +1,4 @@
-namespace Kitchen;
+namespace NotificationBoard;
 
 public static class Extensions
 {

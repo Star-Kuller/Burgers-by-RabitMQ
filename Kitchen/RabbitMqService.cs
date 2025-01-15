@@ -7,7 +7,7 @@ namespace Kitchen;
 
 public class RabbitMqService(IChannel channel) : IRabbitMqService
 {
-    public AsyncEventingBasicConsumer Consumer { get; init; } = new(channel);
+    public AsyncEventingBasicConsumer KitchenConsumer { get; init; } = new(channel);
 
     public async Task InitializeRabbitMqAsync()
     {
@@ -23,7 +23,7 @@ public class RabbitMqService(IChannel channel) : IRabbitMqService
             exclusive: false,
             autoDelete: false);
         
-        await channel.BasicConsumeAsync("Kitchen", autoAck: true, consumer: Consumer);
+        await channel.BasicConsumeAsync("Kitchen", autoAck: true, consumer: KitchenConsumer);
     }
 
     public async Task SendFinishedOrderAsync(FinishedOrder order)
@@ -31,9 +31,19 @@ public class RabbitMqService(IChannel channel) : IRabbitMqService
         var serializedOrder = JsonConvert.SerializeObject(order);
         var body = Encoding.UTF8.GetBytes(serializedOrder);
         
+        var basicProperties = new BasicProperties
+        {
+            Headers = new Dictionary<string, object?>()
+            {
+                {"message_type", nameof(FinishedOrder)}
+            }
+        };
+
         await channel.BasicPublishAsync(
             exchange: "",
             routingKey: "Notification",
+            mandatory: false,
+            basicProperties: basicProperties,
             body: body);
     }
 }

@@ -4,7 +4,7 @@ namespace Kitchen;
 
 public interface IRabbitMqService
 {
-    AsyncEventingBasicConsumer Consumer { get; }
+    AsyncEventingBasicConsumer KitchenConsumer { get; }
     Task InitializeRabbitMqAsync();
     Task SendFinishedOrderAsync(FinishedOrder order);
 }

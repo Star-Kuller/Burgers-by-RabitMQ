@@ -31,12 +31,22 @@ public class RabbitMqService(IChannel channel) : IRabbitMqService
     
     public async Task SendOrderAsync(Order order)
     {
-        var serializedOrder = JsonConvert.SerializeObject(order);
-        var body = Encoding.UTF8.GetBytes(serializedOrder);
+        var json = JsonConvert.SerializeObject(order);
+        var body = Encoding.UTF8.GetBytes(json);
+        
+        var basicProperties = new BasicProperties
+        {
+            Headers = new Dictionary<string, object?>()
+            {
+                {"message_type", nameof(Order)}
+            }
+        };
 
         await channel.BasicPublishAsync(
             exchange: "orders_exchange",
             routingKey: "",
+            mandatory: false,
+            basicProperties: basicProperties,
             body: body);
     }
 }
