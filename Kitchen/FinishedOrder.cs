@@ -1,4 +1,4 @@
-namespace NotificationBoard;
+namespace Kitchen;
 
 public class FinishedOrder(Order order)
 {

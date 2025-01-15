@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace NotificationBoard;
+namespace Kitchen;
 
 public class RabbitMqService(IChannel channel) : IRabbitMqService
 {

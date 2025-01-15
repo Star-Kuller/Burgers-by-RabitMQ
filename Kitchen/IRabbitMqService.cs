@@ -1,6 +1,6 @@
 using RabbitMQ.Client.Events;
 
-namespace NotificationBoard;
+namespace Kitchen;
 
 public interface IRabbitMqService
 {
