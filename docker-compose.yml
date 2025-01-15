@@ -10,7 +10,16 @@
       timeout: 20s
       retries: 5
 
-  kitchen:
+  kitchen-1:
+    image: kitchen
+    build:
+      context: .
+      dockerfile: Kitchen/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        
+  kitchen-2:
     image: kitchen
     build:
       context: .
